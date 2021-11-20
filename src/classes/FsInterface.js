@@ -193,6 +193,16 @@ class FsInterface {
     }
 
     /**
+     * Is local dir
+     * @public
+     * @param {string} dir - Directory path
+     * @return {boolean} - True if directory exists
+     */
+    isDir( dir ) {
+        return fs.lstatSync( dir ).isDirectory();
+    }
+
+    /**
      * Get relative to root path
      * @public
      * @param {string} dir - Source path

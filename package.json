@@ -1,5 +1,5 @@
 {
-  "name": "node-util",
+  "name": "@squirrel-forge/node-util",
   "version": "0.5.0",
   "description": "Collection of node utilities",
   "main": "index.js",

@@ -1,6 +1,6 @@
 {
   "name": "@squirrel-forge/node-util",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Collection of node utilities",
   "main": "index.js",
   "scripts": {
@@ -27,6 +27,7 @@
     "node": ">= 10.0.0"
   },
   "dependencies": {
+    "cli-spinner": "^0.2.10",
     "directory-tree": "^3.0.0",
     "intercept-stdout": "^0.1.2",
     "node-fetch": "^2.6.1"

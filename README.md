@@ -1,5 +1,6 @@
-# node-util
-Collection of node utilities
+# @squirrel-forge/node-util
+
+Collection of node utilities.
 
 ## Installation
 
@@ -22,14 +23,19 @@ const util = require( '@squirrel-forge/node-util' );
  - Exception
  - FsInterface
  - OutputBuffer
+ - Progress
+ - Timer
+ - Warning
 
 ### Functions
 
+ - callback
  - isPojo
  - isUrl
  - parseInput
  - prompt
  - trimChar
+ - wait
 
 ## Docs
 

@@ -57,7 +57,7 @@ class FsInterface {
      */
     async remoteText( url ) {
         const buf = await this.remote( url );
-        if ( buf instanceof Exception ) {
+        if ( buf instanceof Error ) {
             throw buf;
         }
         return buf ? buf.toString( 'utf8' ) : null;
@@ -111,7 +111,7 @@ class FsInterface {
      */
     async readText( file ) {
         const buf = await this.read( file, 'utf8' );
-        if ( buf instanceof Exception ) {
+        if ( buf instanceof Error ) {
             throw buf;
         }
         return buf ? buf.toString( 'utf8' ) : null;

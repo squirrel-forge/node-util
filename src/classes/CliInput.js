@@ -201,11 +201,12 @@ class CliInput {
      * @param {boolean} is_bool - Boolean question, default: false
      * @param {null|Function|QuestionInputValidator} validate - Input validator, default: null
      * @param {boolean} skippable - False to require a valid answer, default: true
+     * @param {null|*} default_value - Default value to use on skip, default: null
      * @param {boolean} confirm_bool - Skippable and bool set answer to true, default: false
      * @param {boolean} last - True to stop asking questions on valid value inside a loop, default: null
-     * @param {string} text_skip - Text to show on skip
-     * @param {string} text_confirm - Text to show on confirm
-     * @param {string} text_prefix - Prefix for skip and confirm text
+     * @param {string} text_skip - Text to show on skip, default: 'skipping'
+     * @param {string} text_confirm - Text to show on confirm, default: 'yes'
+     * @param {string} text_prefix - Prefix for skip and confirm text, default: '  > '
      * @return {Promise<{is_last: boolean, answer: (string|boolean)}>} - Response data
      */
     async question( {
@@ -213,6 +214,7 @@ class CliInput {
         is_bool = false,
         validate = null,
         skippable = true,
+        default_value = null,
         confirm_bool = false,
         last = null,
         text_skip = 'skipped',
@@ -256,7 +258,7 @@ class CliInput {
 
             // Question is skippable
             if ( skippable && answer.length === 0 ) {
-                answer = null;
+                answer = default_value;
                 if ( !tries ) {
                     this.eraseLastLine();
                     if ( !confirm_bool ) {

@@ -132,6 +132,32 @@ class CliInput {
     }
 
     /**
+     * Set arguments
+     * @param {string|Array<string>} arg - String is appended, array replaces
+     * @return {void}
+     */
+    setArg( arg ) {
+        if ( arg instanceof Array ) {
+            this._i.args = [ ...arg ];
+        } else {
+            this._i.args.push( arg );
+        }
+    }
+
+    /**
+     * Set flags and options
+     * @param {string|Array<string>} flag - String is appended, array replaces
+     * @return {void}
+     */
+    setFlag( flag ) {
+        if ( flag instanceof Array ) {
+            this._i.flags = [ ...flag ];
+        } else {
+            this._i.flags.push( flag );
+        }
+    }
+
+    /**
      * Get flags and options as object
      * @public
      * @param {{name:['short','long','default',boolean]}} src - Options source map
@@ -175,7 +201,11 @@ class CliInput {
      * @param {boolean} is_bool - Boolean question, default: false
      * @param {null|Function|QuestionInputValidator} validate - Input validator, default: null
      * @param {boolean} skippable - False to require a valid answer, default: true
-     * @param {boolean} last - True to stop asking questions on valid value inside a loop
+     * @param {boolean} confirm_bool - Skippable and bool set answer to true, default: false
+     * @param {boolean} last - True to stop asking questions on valid value inside a loop, default: null
+     * @param {string} text_skip - Text to show on skip
+     * @param {string} text_confirm - Text to show on confirm
+     * @param {string} text_prefix - Prefix for skip and confirm text
      * @return {Promise<{is_last: boolean, answer: (string|boolean)}>} - Response data
      */
     async question( {
@@ -183,7 +213,11 @@ class CliInput {
         is_bool = false,
         validate = null,
         skippable = true,
-        last = null
+        confirm_bool = false,
+        last = null,
+        text_skip = 'skipped',
+        text_confirm = 'yes',
+        text_prefix = '  > ',
     } = {} ) {
         this._cfx.log( '[bwhite][fblack]  [ul]' + question + '[re][bwhite]  [re]' );
 
@@ -225,7 +259,14 @@ class CliInput {
                 answer = null;
                 if ( !tries ) {
                     this.eraseLastLine();
-                    this._cfx.log( '  > skipped' );
+                    if ( !confirm_bool ) {
+                        this._cfx.log( text_prefix + text_skip );
+                    } else {
+                        this._cfx.log( text_prefix + text_confirm );
+                    }
+                }
+                if ( confirm_bool ) {
+                    answer = true;
                 }
                 break;
             }

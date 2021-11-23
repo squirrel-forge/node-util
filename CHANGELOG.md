@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.4
+ - Added *confirm_bool* option on enter/empty input and response text options for *CliInput.question* method.
+ - Added *CliInput.setArg* and *CliInput.setFlag* methods to manually add or fully replace args and flags.
+
 ## 0.5.3
  - Changed FsInterface instanceof Error instead of Exception.
  - Minor docs updates.

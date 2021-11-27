@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.6.0
+ - Added *convertBytes* number formatter.
+ - Added *leadingZeros* number formatter.
+ - Added *rand* get random number with min, max arguments.
+ - Added *round* number formatter.
+ - Added *simpleReplace* replace object property values in string.
+ - Added *strand* generates a random string, very fast, not very unique.
+ - Added *strSlug* sanitizes a string.
+
 ## 0.5.5
  - Added *cmd* promise style function.
  - Added *default_value* options to *CliInput.question* method.

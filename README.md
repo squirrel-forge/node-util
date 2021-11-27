@@ -30,10 +30,18 @@ const util = require( '@squirrel-forge/node-util' );
 ### Functions
 
  - callback
+ - cmd
+ - convertBytes
  - isPojo
  - isUrl
+ - leadingZeros
  - parseInput
  - prompt
+ - rand
+ - round
+ - simpleReplace
+ - strand
+ - strSlug
  - trimChar
  - wait
 

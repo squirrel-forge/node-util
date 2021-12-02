@@ -272,6 +272,42 @@ class FsInterface {
             }
         }
     }
+
+    /**
+     * Tree walker
+     * @param {Object} tree - directory-tree result
+     * @param {Function} callback - Callback
+     * @return {undefined|false} - False if iteration was cancelled
+     */
+    treeWalker( tree, callback ) {
+        if ( !( tree instanceof Array ) ) {
+            if ( !( tree.children instanceof Array ) ) {
+                throw new Error( '' );
+            }
+            tree = tree.children;
+        }
+        for ( let i = 0; i < tree.length; i++ ) {
+            const item = tree[ i ];
+            const o = {
+                name : item.name,
+                path : item.path,
+                ext : item.children ? null : path.extname( item.path ),
+                dir : !!item.children,
+            };
+            const action = callback( o );
+            if ( action === true ) {
+                continue;
+            } else if ( action === false ) {
+                return false;
+            }
+            if ( o.dir ) {
+                const sub_action = this.treeWalker( item.children, callback );
+                if ( sub_action === false ) {
+                    return false;
+                }
+            }
+        }
+    }
 }
 
 // Export FsInterfaceException as static property constructor

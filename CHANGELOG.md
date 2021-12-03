@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.6.1
+ - Added *FsInterface.treeWalker* method to easily run a directory-tree result.
+
 ## 0.6.0
  - Added *convertBytes* number formatter.
  - Added *leadingZeros* number formatter.

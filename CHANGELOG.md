@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.6.2
+ - Added *FsInterface.unlink* method for deleting a single file.
+
 ## 0.6.1
  - Added *FsInterface.treeWalker* method to easily run a directory-tree result.
 

@@ -203,6 +203,23 @@ class FsInterface {
     }
 
     /**
+     * Delete file
+     * @param {string} file - Path to file
+     * @return {Promise<true|FsInterfaceException|null>} - True or null on error
+     */
+    unlink( file ) {
+        return new Promise( ( resolve ) => {
+            fs.unlink( file, ( err ) => {
+                if ( err ) {
+                    resolve( new FsInterfaceException( 'Failed to delete file: ' + file, err ) );
+                } else {
+                    resolve( true );
+                }
+            } );
+        } );
+    }
+
+    /**
      * Get relative to root path
      * @public
      * @param {string} dir - Source path

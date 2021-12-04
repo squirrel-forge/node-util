@@ -1,6 +1,6 @@
 {
   "name": "@squirrel-forge/node-util",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "Collection of node utilities",
   "main": "index.js",
   "scripts": {

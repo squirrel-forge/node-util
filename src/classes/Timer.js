@@ -28,12 +28,25 @@ class Timer {
     }
 
     /**
-     * End timer
+     * Get start time
      * @public
      * @param {string} name - Timer name
+     * @return {null|hrtime} - Null if not started
+     */
+    get( name ) {
+        if ( this._[ name ] ) {
+            return this._[ name ];
+        }
+        return null;
+    }
+
+    /**
+     * End timer
+     * @public
+     * @param {string} name - Timer name, default: 'construct'
      * @return {null|string} - Time result or null if not available
      */
-    end( name ) {
+    end( name = 'construct' ) {
         if ( this._[ name ] ) {
             const cmd_time = process.hrtime( this._[ name ] );
             return ( cmd_time[ 0 ] ? cmd_time[ 0 ] + 's ' : '' ) +  cmd_time[ 1 ] / 1000000  + 'ms';

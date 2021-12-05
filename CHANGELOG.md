@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.0
+ - Added a little better docs overview of abilities.
+ - Added *Timer.get* to get specified start hrtime.
+ - Made FsInterface methods static.
+
 ## 0.6.2
  - Added *FsInterface.unlink* method for deleting a single file.
 

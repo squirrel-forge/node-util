@@ -26,7 +26,7 @@ class FsInterface {
      * @param {string} url - Url to file
      * @return {Promise<Buffer|FsInterfaceException|null>} - Buffer or null on error
      */
-    remote( url ) {
+    static remote( url ) {
         return new Promise( ( resolve ) => {
 
             /**
@@ -55,8 +55,8 @@ class FsInterface {
      * @throws {FsInterfaceException}
      * @return {Promise<string|null>} - UTF8 string
      */
-    async remoteText( url ) {
-        const buf = await this.remote( url );
+    static async remoteText( url ) {
+        const buf = await FsInterface.remote( url );
         if ( buf instanceof Error ) {
             throw buf;
         }
@@ -70,8 +70,8 @@ class FsInterface {
      * @throws {FsInterfaceException}
      * @return {Promise<Array|Object|null>} - JSON data
      */
-    async remoteJSON( url ) {
-        const text = await this.remoteText( url );
+    static async remoteJSON( url ) {
+        const text = await FsInterface.remoteText( url );
         if ( text ) {
             try {
                 return JSON.parse( text );
@@ -89,7 +89,7 @@ class FsInterface {
      * @param {string} enc - Charset
      * @return {Promise<Buffer|FsInterfaceException|null>} - Buffer or null on error
      */
-    read( file, enc = 'utf8' ) {
+    static read( file, enc = 'utf8' ) {
         return new Promise( ( resolve ) => {
             fs.readFile( file, enc, ( err, content ) => {
                 if ( err ) {
@@ -109,8 +109,8 @@ class FsInterface {
      * @throws {FsInterfaceException}
      * @return {Promise<string|null>} - UTF8 string
      */
-    async readText( file ) {
-        const buf = await this.read( file, 'utf8' );
+    static async readText( file ) {
+        const buf = await FsInterface.read( file, 'utf8' );
         if ( buf instanceof Error ) {
             throw buf;
         }
@@ -124,8 +124,8 @@ class FsInterface {
      * @throws {FsInterfaceException}
      * @return {Promise<Array|Object|null>} - JSON data
      */
-    async readJSON( file ) {
-        const text = await this.readText( file );
+    static async readJSON( file ) {
+        const text = await FsInterface.readText( file );
         if ( text ) {
             try {
                 return JSON.parse( text );
@@ -143,7 +143,7 @@ class FsInterface {
      * @param {string} type - Access type
      * @return {Promise<boolean>} - True if file exists
      */
-    exists( file, type = 'R_OK' ) {
+    static exists( file, type = 'R_OK' ) {
         return new Promise( ( resolve ) => {
             fs.access( file, fs.constants[ type ], ( err ) => {
                 if ( err ) {
@@ -162,7 +162,7 @@ class FsInterface {
      * @param {string} content - File content
      * @return {Promise<boolean|FsInterfaceException>} - True if the file was created
      */
-    write( file, content ) {
+    static write( file, content ) {
         return new Promise( ( resolve ) => {
             fs.writeFile( file, content, ( err ) => {
                 if ( err ) {
@@ -180,7 +180,7 @@ class FsInterface {
      * @param {string} dir - Directory path
      * @return {Promise<boolean|FsInterfaceException>} - True if directory exists or was created
      */
-    dir( dir ) {
+    static dir( dir ) {
         return new Promise( ( resolve ) => {
             fs.mkdir( dir, { recursive : true }, ( err ) => {
                 if ( err ) {
@@ -198,16 +198,17 @@ class FsInterface {
      * @param {string} dir - Directory path
      * @return {boolean} - True if directory exists
      */
-    isDir( dir ) {
+    static isDir( dir ) {
         return fs.lstatSync( dir ).isDirectory();
     }
 
     /**
      * Delete file
+     * @public
      * @param {string} file - Path to file
      * @return {Promise<true|FsInterfaceException|null>} - True or null on error
      */
-    unlink( file ) {
+    static unlink( file ) {
         return new Promise( ( resolve ) => {
             fs.unlink( file, ( err ) => {
                 if ( err ) {
@@ -227,7 +228,7 @@ class FsInterface {
      * @throws {FsInterfaceException}
      * @return {string} - Path relative to root
      */
-    relative2root( dir, root ) {
+    static relative2root( dir, root ) {
 
         // Directory must be a descendant of root
         if ( dir.substr( 0, root.length ) !== root ) {
@@ -249,7 +250,7 @@ class FsInterface {
      * @param {('json'|'js')|Object} options - directory-tree options
      * @return {Array} - List of files
      */
-    fileList( dir, options ) {
+    static fileList( dir, options ) {
 
         // Options shortcuts
         if ( options === 'json' ) {
@@ -264,24 +265,24 @@ class FsInterface {
 
         // Build flat results array
         if ( tree && tree.children ) {
-            this._fileListRecursive2Flat( tree.children, result );
+            FsInterface.fileListRecursive2Flat( tree.children, result );
         }
         return result;
     }
 
     /**
      * Convert tree to file list
-     * @private
+     * @public
      * @param {dirTree} tree - Tree data
      * @param {Array} result - Files list
      * @return {void}
      */
-    _fileListRecursive2Flat( tree, result ) {
+    static fileListRecursive2Flat( tree, result ) {
         for ( let i = 0; i < tree.length; i++ ) {
             if ( tree[ i ].children ) {
 
                 // Iterate down the tree
-                this._fileListRecursive2Flat( tree[ i ].children, result );
+                FsInterface.fileListRecursive2Flat( tree[ i ].children, result );
             } else {
 
                 // Add path to list
@@ -292,11 +293,12 @@ class FsInterface {
 
     /**
      * Tree walker
+     * @public
      * @param {Object} tree - directory-tree result
      * @param {Function} callback - Callback
      * @return {undefined|false} - False if iteration was cancelled
      */
-    treeWalker( tree, callback ) {
+    static treeWalker( tree, callback ) {
         if ( !( tree instanceof Array ) ) {
             if ( !( tree.children instanceof Array ) ) {
                 throw new Error( '' );
@@ -318,7 +320,7 @@ class FsInterface {
                 return false;
             }
             if ( o.dir ) {
-                const sub_action = this.treeWalker( item.children, callback );
+                const sub_action = FsInterface.treeWalker( item.children, callback );
                 if ( sub_action === false ) {
                     return false;
                 }

@@ -1,4 +1,9 @@
 /**
+ * Requires
+ */
+const displayHrtime = require( '../fn/displayHrtime' );
+
+/**
  * Timer class
  * @class
  */
@@ -41,16 +46,26 @@ class Timer {
     }
 
     /**
+     * Measure time
+     * @param {string} name - Timer name
+     * @return {null|[number, number]} - Process hrtime value
+     */
+    measure( name ) {
+        if ( this._[ name ] ) {
+            return process.hrtime( this._[ name ] );
+        }
+        return null;
+    }
+
+    /**
      * End timer
      * @public
      * @param {string} name - Timer name, default: 'construct'
      * @return {null|string} - Time result or null if not available
      */
     end( name = 'construct' ) {
-        if ( this._[ name ] ) {
-            const cmd_time = process.hrtime( this._[ name ] );
-            return ( cmd_time[ 0 ] ? cmd_time[ 0 ] + 's ' : '' ) +  cmd_time[ 1 ] / 1000000  + 'ms';
-        }
+        const t = this.measure( name );
+        if ( t ) return displayHrtime( t );
         return null;
     }
 

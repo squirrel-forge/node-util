@@ -1,7 +1,7 @@
 /**
  * Requires
  */
-const displayHrtime = require( '../fn/displayHrtime' );
+const convertHrtime = require( '../fn/convertHrtime' );
 
 /**
  * Timer class
@@ -65,7 +65,7 @@ class Timer {
      */
     end( name = 'construct' ) {
         const t = this.measure( name );
-        if ( t ) return displayHrtime( t );
+        if ( t ) return convertHrtime( t );
         return null;
     }
 

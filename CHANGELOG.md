@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.1
+ - Added *Timer.measure* to get hrtime difference to start and improved *Timer.end*.
+ - Added *convertHrtime* hrtime formatter.
+ - Added *StatsDisplay* class and *StatsDisplayType* class for making and displaying pretty stats objects.
+
 ## 1.0.0
  - Added a little better docs overview of abilities.
  - Added *Timer.get* to get specified start hrtime.

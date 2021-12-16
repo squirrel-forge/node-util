@@ -54,7 +54,7 @@ class StatsDisplayType {
      * Default converter
      * @param {*} value - Any value
      * @param {StatsDisplay} stDi - StatsDisplay instance
-     * @return {string} - Empty string representation
+     * @return {string} - Readable string representation of value
      */
     static convert_any( value, stDi ) {
         if ( value === null ) {
@@ -105,6 +105,12 @@ class StatsDisplayType {
         return '';
     }
 
+    /**
+     * Hrtime converter
+     * @param {Array<number>} value - Hrtime
+     * @param {StatsDisplay} stDi - StatsDisplay instance
+     * @return {string} - Readable string representation of hrtime
+     */
     static convert_time( value, stDi ) {
         if ( !( value instanceof Array )
             || value.length !== 2
@@ -121,12 +127,24 @@ class StatsDisplayType {
         return result.join( '' );
     }
 
+    /**
+     * Bytes converter
+     * @param {number} value - Bytes
+     * @param {StatsDisplay} stDi - StatsDisplay instance
+     * @return {string} - Readable string representation of bytes
+     */
     static convert_bytes( value, stDi ) {
         const size = convertBytes( value, 2, 1024, true );
         return this.style_convert( 'bytesNum', size.value, stDi )
             + ' ' + this.style_convert( 'bytesUnit', size.unit, stDi );
     }
 
+    /**
+     * Path/url converter
+     * @param {string} value - Path or url
+     * @param {StatsDisplay} stDi - StatsDisplay instance
+     * @return {string} - Colored representation of path or url
+     */
     static convert_path( value, stDi ) {
         if ( !value.length ) {
             return '';
@@ -145,38 +163,94 @@ class StatsDisplayType {
         return result.join( '' );
     }
 
+    /**
+     * Fatal converter
+     * @param {string} value - String to style
+     * @param {StatsDisplay} stDi - StatsDisplay instance
+     * @return {string} - Styled representation of value
+     */
     static convert_fatal( value, stDi ) {
         return this.style_convert( 'fatal', value, stDi );
     }
 
+    /**
+     * Error converter
+     * @param {string} value - String to style
+     * @param {StatsDisplay} stDi - StatsDisplay instance
+     * @return {string} - Styled representation of value
+     */
     static convert_error( value, stDi ) {
         return this.style_convert( 'error', value, stDi );
     }
 
+    /**
+     * Warning converter
+     * @param {string} value - String to style
+     * @param {StatsDisplay} stDi - StatsDisplay instance
+     * @return {string} - Styled representation of value
+     */
     static convert_warn( value, stDi ) {
         return this.style_convert( 'warn', value, stDi );
     }
 
+    /**
+     * Notice converter
+     * @param {string} value - String to style
+     * @param {StatsDisplay} stDi - StatsDisplay instance
+     * @return {string} - Styled representation of value
+     */
     static convert_notice( value, stDi ) {
         return this.style_convert( 'notice', value, stDi );
     }
 
+    /**
+     * Success converter
+     * @param {string} value - String to style
+     * @param {StatsDisplay} stDi - StatsDisplay instance
+     * @return {string} - Styled representation of value
+     */
     static convert_success( value, stDi ) {
         return this.style_convert( 'success', value, stDi );
     }
 
+    /**
+     * Valid converter
+     * @param {string} value - String to style
+     * @param {StatsDisplay} stDi - StatsDisplay instance
+     * @return {string} - Styled representation of value
+     */
     static convert_valid( value, stDi ) {
         return this.style_convert( 'valid', value, stDi );
     }
 
+    /**
+     * Alert converter
+     * @param {string} value - String to style
+     * @param {StatsDisplay} stDi - StatsDisplay instance
+     * @return {string} - Styled representation of value
+     */
     static convert_alert( value, stDi ) {
         return this.style_convert( 'alert', value, stDi );
     }
 
+    /**
+     * Show/highlight converter
+     * @param {string} value - String to style
+     * @param {StatsDisplay} stDi - StatsDisplay instance
+     * @return {string} - Styled representation of value
+     */
     static convert_show( value, stDi ) {
         return this.style_convert( 'show', value, stDi );
     }
 
+    /**
+     * Convert to style
+     * @param {string} style - Style name
+     * @param {string} value - Value to style
+     * @param {StatsDisplay} stDi - StatsDisplay instance
+     * @param {boolean} noReset - Do not reset style at end of string
+     * @return {string} - Styled string
+     */
     static style_convert( style, value, stDi, noReset = false ) {
         const to = typeof value;
         if ( to !== 'string' ) {
@@ -236,7 +310,6 @@ class StatsDisplayType {
 /**
  * StatsDisplay
  * @class
- * @type {StatsDisplay}
  */
 class StatsDisplay {
 
@@ -255,6 +328,12 @@ class StatsDisplay {
          */
         this._cfx = cfx;
 
+        /**
+         * Stats output header
+         * @public
+         * @property
+         * @type {string}
+         */
         this.header = '[fmagenta][ [fwhite]Stats [fmagenta]][re]';
 
         /**
@@ -293,7 +372,20 @@ class StatsDisplay {
             heading6 : '[bwhite][fblack][bo]>[re] [fcyan]',
         };
 
+        /**
+         * Level indent factor
+         * @public
+         * @property
+         * @type {number}
+         */
         this.indentFactor = 1;
+
+        /**
+         * Collection of pieces used for rendering the stats
+         * @public
+         * @property
+         * @type {Object}
+         */
         this.pieces = { headingSpacer : ' : ' };
 
         /**
@@ -305,10 +397,22 @@ class StatsDisplay {
         this.styleReset = '[re]';
     }
 
+    /**
+     * Style is defined
+     * @param {string} style - Style name
+     * @return {boolean} - True if the style name is defined
+     */
     hasStyle( style ) {
         return !!this.styles[ style ];
     }
 
+    /**
+     * Style string
+     * @param {string} str - String to style
+     * @param {string} style - Style name
+     * @param {boolean} noReset - Do not reset style at end of string
+     * @return {string} - Styled string
+     */
     styleAs( str, style = null, noReset = false ) {
         if ( !style ) return str;
         if ( !this.hasStyle( style ) ) {
@@ -317,6 +421,14 @@ class StatsDisplay {
         return this.styles[ style ] + str + ( noReset ? '' : this.styleReset );
     }
 
+    /**
+     * Recursive parse stats object
+     * @protected
+     * @param {*} src - Stats object
+     * @param {Array} result - Result array to fill
+     * @param {number} level - Indent level
+     * @return {void}
+     */
     _recursive( src, result, level ) {
         if ( src === null || typeof src !== 'object' ) {
             throw new StatsDisplayException( 'Invalid source type: ' + typeof src );
@@ -334,10 +446,22 @@ class StatsDisplay {
         }
     }
 
+    /**
+     * Simple type value checker
+     * @protected
+     * @param {*} value - Any value
+     * @return {boolean} - True if simple value
+     */
     _is_simple( value ) {
         return value === null || typeof value !== 'object';
     }
 
+    /**
+     * Abstract type value checker
+     * @protected
+     * @param {*} value - Any value
+     * @return {boolean} - True if abstract display type
+     */
     _is_display_type( value ) {
         return value instanceof Array
             && value.length === 2
@@ -345,12 +469,25 @@ class StatsDisplay {
             && StatsDisplayType.has_type( value[ 1 ] );
     }
 
+    /**
+     * Get indent
+     * @protected
+     * @param {number} level - Indent level
+     * @return {string} - Indent prefix string
+     */
     _indent( level ) {
         level--;
         if ( level < 1 ) return '';
         return ' '.repeat( level * this.indentFactor );
     }
 
+    /**
+     * Parse array
+     * @param {Object} src - Stats object
+     * @param {Array} result - Result array to fill
+     * @param {number} level - Indent level
+     * @return {void}
+     */
     _object( src, result, level ) {
         if ( !isPojo( src ) ) {
             throw new StatsDisplayException( 'Source must be a plain object' );
@@ -366,6 +503,14 @@ class StatsDisplay {
         }
     }
 
+    /**
+     * Display value
+     * @param {*} value - Value
+     * @param {Array} result - Result array to fill
+     * @param {number} level - Indent level
+     * @param {null|string} heading - Heading to use
+     * @return {boolean} - True if value was displayed
+     */
     _display( value, result, level, heading = null ) {
         if ( this._is_simple( value ) ) {
             value = new StatsDisplayType( value );
@@ -389,6 +534,13 @@ class StatsDisplay {
         return false;
     }
 
+    /**
+     * Parse array
+     * @param {Array} src - Stats array
+     * @param {Array} result - Result array to fill
+     * @param {number} level - Indent level
+     * @return {void}
+     */
     _array( src, result, level ) {
         if ( !( src instanceof Array ) ) {
             throw new StatsDisplayException( 'Source must be an array' );
@@ -400,10 +552,24 @@ class StatsDisplay {
         }
     }
 
+    /**
+     * Parse stats object
+     * @public
+     * @param {Object} src - Stats object
+     * @param {Array} result - Result array to fill
+     * @return {void}
+     */
     parse( src, result ) {
         this._recursive( src, result, 1 );
     }
 
+    /**
+     * Generate stats output
+     * @public
+     * @param {Object} src - Stats object
+     * @param {boolean} output - Output with cfx instance
+     * @return {Array<string>} - Generated output
+     */
     display( src, output = true ) {
 
         // Heading

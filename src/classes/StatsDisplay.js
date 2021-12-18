@@ -58,32 +58,32 @@ class StatsDisplayType {
      */
     static convert_any( value, stDi ) {
         if ( value === null ) {
-            if ( stDi && stDi.hasStyle( 'null' ) ) {
-                return this.style_convert( 'null', value, stDi );
+            if ( stDi && stDi.hasStyle( 'type_null' ) ) {
+                return this.style_convert( 'type_null', value, stDi );
             }
             return 'null';
         }
         const to = typeof value;
         switch ( to ) {
         case 'undefined' :
-            if ( stDi && stDi.hasStyle( to ) ) {
-                return this.style_convert( to, to, stDi );
+            if ( stDi && stDi.hasStyle( 'type_' + to ) ) {
+                return this.style_convert( 'type_' + to, to, stDi );
             }
             return to;
         case 'boolean' :
             value = value ? 'true' : 'false';
-            if ( stDi && stDi.hasStyle( to ) ) {
-                return this.style_convert( to, value, stDi );
+            if ( stDi && stDi.hasStyle( 'type_' + to ) ) {
+                return this.style_convert( 'type_' + to, value, stDi );
             }
             return value;
         case 'number' :
-            if ( stDi && stDi.hasStyle( to ) ) {
-                return this.style_convert( to, '' + value, stDi );
+            if ( stDi && stDi.hasStyle( 'type_' + to ) ) {
+                return this.style_convert( 'type_' + to, '' + value, stDi );
             }
             return '' + value;
         case 'string' :
-            if ( stDi && stDi.hasStyle( to ) ) {
-                return this.style_convert( to, value, stDi );
+            if ( stDi && stDi.hasStyle( 'type_' + to ) ) {
+                return this.style_convert( 'type_' + to, value, stDi );
             }
             return value;
         case 'object' :
@@ -99,10 +99,104 @@ class StatsDisplayType {
                 }
             }
         }
-        if ( stDi && stDi.hasStyle( 'unknown' ) ) {
-            return this.style_convert( 'unknown', '', stDi );
+        if ( stDi && stDi.hasStyle( 'type_unknown' ) ) {
+            return this.style_convert( 'type_unknown', '[object Unknown]', stDi );
         }
         return '';
+    }
+
+    /**
+     * Null style convert
+     * @param {*} value - Any string convertable
+     * @param {StatsDisplay} stDi - StatsDisplay instance
+     * @return {string} - Readable string representation of value
+     */
+    static convert_null( value, stDi ) {
+        return this.style_convert( 'type_null', '' + value, stDi );
+    }
+
+    /**
+     * Undefined style convert
+     * @param {*} value - Any string convertable
+     * @param {StatsDisplay} stDi - StatsDisplay instance
+     * @return {string} - Readable string representation of value
+     */
+    static convert_undefined( value, stDi ) {
+        return this.style_convert( 'type_undefined', '' + value, stDi );
+    }
+
+    /**
+     * Boolean style convert
+     * @param {*} value - Any string convertable
+     * @param {StatsDisplay} stDi - StatsDisplay instance
+     * @return {string} - Readable string representation of value
+     */
+    static convert_boolean( value, stDi ) {
+        return this.style_convert( 'type_boolean', '' + value, stDi );
+    }
+
+    /**
+     * Number style convert
+     * @param {*} value - Any string convertable
+     * @param {StatsDisplay} stDi - StatsDisplay instance
+     * @return {string} - Readable string representation of value
+     */
+    static convert_number( value, stDi ) {
+        return this.style_convert( 'type_number', '' + value, stDi );
+    }
+
+    /**
+     * Unknown style convert
+     * @param {*} value - Any string convertable
+     * @param {StatsDisplay} stDi - StatsDisplay instance
+     * @return {string} - Readable string representation of value
+     */
+    static convert_unknown( value, stDi ) {
+        return this.style_convert( 'type_unknown', '' + value, stDi );
+    }
+
+    /**
+     * No style convert
+     * @param {*} value - Any string convertable
+     * @param {StatsDisplay} stDi - StatsDisplay instance
+     * @return {string} - Readable string representation of value
+     */
+    static convert_none( value, stDi ) {
+        if ( stDi && stDi.hasStyle( 'none' ) ) {
+            return this.style_convert( 'none', value + '', stDi );
+        }
+        return value + '';
+    }
+
+    /**
+     * Array to oneliner
+     * @param {Array} value - Array of values
+     * @param {StatsDisplay} stDi - StatsDisplay instance
+     * @return {string} - Readable string representation of array values
+     */
+    static convert_asline( value, stDi ) {
+        const result = [];
+        for ( let i = 0; i < value.length; i++ ) {
+            if ( this.is_type( value[ i ] ) ) {
+                const typed = new this( ...value[ i ] );
+                typed.parent = stDi;
+                result.push( typed + '' );
+            } else {
+                result.push( this.convert_any( value[ i ], stDi ) );
+            }
+        }
+        return result.join( ' ' );
+    }
+
+    /**
+     * Percent converter
+     * @param {Array} value - Percent value
+     * @param {StatsDisplay} stDi - StatsDisplay instance
+     * @return {string} - Readable string representation of percent
+     */
+    static convert_percent( value, stDi ) {
+        return this.style_convert( 'type_number', '' + value, stDi )
+            + this.style_convert( 'unit', '%', stDi );
     }
 
     /**
@@ -118,11 +212,11 @@ class StatsDisplayType {
             || typeof value[ 1 ] !== 'number' ) {
             throw new StatsDisplayException( 'Invalid hrtime format: ' + typeof value );
         }
-        const time = convertHrtime( value, ' s ', ' ms', true );
-        const styles = [ 'timeNum1', 'timeUnit1', 'timeNum2', 'timeUnit2' ];
+        const time = convertHrtime( value, 's ', 'ms', true );
+        const styles = [ 'type_number', 'unit', 'type_number', 'unit' ];
         const result = [];
         for ( let i = 0; i < time.length; i++ ) {
-            result.push( this.style_convert( styles[ 4 - time.length ], time[ i ], stDi ) );
+            result.push( this.style_convert( styles[ 4 + i - time.length ], time[ i ], stDi ) );
         }
         return result.join( '' );
     }
@@ -135,8 +229,8 @@ class StatsDisplayType {
      */
     static convert_bytes( value, stDi ) {
         const size = convertBytes( value, 2, 1024, true );
-        return this.style_convert( 'bytesNum', size.value, stDi )
-            + ' ' + this.style_convert( 'bytesUnit', size.unit, stDi );
+        return this.style_convert( 'type_number', size.value, stDi )
+            + ' ' + this.style_convert( 'unit', size.unit, stDi );
     }
 
     /**
@@ -253,7 +347,7 @@ class StatsDisplayType {
      */
     static style_convert( style, value, stDi, noReset = false ) {
         const to = typeof value;
-        if ( to !== 'string' ) {
+        if ( ![ 'string', 'number' ].includes( to ) ) {
             throw new StatsDisplayException( 'Invalid value type: ' + to );
         }
         if ( typeof stDi.styleAs !== 'function' ) {
@@ -275,6 +369,19 @@ class StatsDisplayType {
             }
         }
         return null;
+    }
+
+    /**
+     * Abstract type value checker
+     * @param {*} value - Value to check
+     * @return {boolean} - True if abstract display type
+     */
+    static is_type( value ) {
+        return value instanceof Array
+            && value.length === 2
+            && typeof value[ 1 ] === 'string'
+            && value[ 1 ].length
+            && this.has_type( value[ 1 ] );
     }
 
     /**
@@ -334,7 +441,9 @@ class StatsDisplay {
          * @property
          * @type {string}
          */
-        this.header = '[fmagenta][ [fwhite]Stats [fmagenta]][re]';
+        this.header = '[bmagenta]' + ' '.repeat( 10 ) + '[re]'
+            + '[fmagenta][  [fwhite]STATS  [fmagenta]]'
+            + '[bmagenta]' + ' '.repeat( 10 ) + '[re]';
 
         /**
          * Output styles
@@ -352,24 +461,26 @@ class StatsDisplay {
             alert : '[bmagenta][fblack]',
             show : '[fmagenta]',
 
-            timeNum1 : '[fwhite]',
-            timeNum2 : '[fwhite]',
-            timeUnit1 : '[fyellow]',
-            timeUnit2 : '[fyellow]',
+            type_null : '[fblue]',
+            type_undefined : '[fwhite]',
+            type_boolean : '[fgreen]',
+            type_number : '[fcyan]',
+            type_string : '[fyellow]',
+            type_unknown : '[fred]',
 
-            bytesNum : '[fwhite]',
-            bytesUnit : '[fwhite]',
+            none : '[fwhite]',
+            unit : '[fwhite]',
 
             pathDir : '[fyellow]',
             pathFile : '[fwhite]',
             pathExt : '[fcyan]',
 
-            heading1 : '[bwhite][fblack][bo]>[re] [fmagenta][bo]',
-            heading2 : '[bwhite][fblack][bo]>[re] [fcyan][bo]',
-            heading3 : '[bwhite][fblack][bo]>[re] [fcyan]',
-            heading4 : '[bwhite][fblack][bo]>[re] [fcyan]',
-            heading5 : '[bwhite][fblack][bo]>[re] [fcyan]',
-            heading6 : '[bwhite][fblack][bo]>[re] [fcyan]',
+            heading1 : '[fmagenta][bo]',
+            heading2 : '[fblue][bo]',
+            heading3 : '[fwhite]',
+            heading4 : '[fwhite]',
+            heading5 : '[fwhite]',
+            heading6 : '[fwhite]',
         };
 
         /**
@@ -381,12 +492,20 @@ class StatsDisplay {
         this.indentFactor = 1;
 
         /**
+         * Start on level
+         * @public
+         * @property
+         * @type {number}
+         */
+        this.indentStart = 1;
+
+        /**
          * Collection of pieces used for rendering the stats
          * @public
          * @property
          * @type {Object}
          */
-        this.pieces = { headingSpacer : ' : ' };
+        this.pieces = { headingSpacer : ' : ', indentChar : ' ' };
 
         /**
          * Reset styles
@@ -448,25 +567,22 @@ class StatsDisplay {
 
     /**
      * Simple type value checker
-     * @protected
+     * @public
      * @param {*} value - Any value
      * @return {boolean} - True if simple value
      */
-    _is_simple( value ) {
+    is_simple( value ) {
         return value === null || typeof value !== 'object';
     }
 
     /**
      * Abstract type value checker
-     * @protected
+     * @public
      * @param {*} value - Any value
      * @return {boolean} - True if abstract display type
      */
-    _is_display_type( value ) {
-        return value instanceof Array
-            && value.length === 2
-            && typeof value[ 1 ] === 'string'
-            && StatsDisplayType.has_type( value[ 1 ] );
+    is_display_type( value ) {
+        return StatsDisplayType.is_type( value );
     }
 
     /**
@@ -476,13 +592,13 @@ class StatsDisplay {
      * @return {string} - Indent prefix string
      */
     _indent( level ) {
-        level--;
         if ( level < 1 ) return '';
-        return ' '.repeat( level * this.indentFactor );
+        return this.pieces.indentChar.repeat( level * this.indentFactor );
     }
 
     /**
      * Parse array
+     * @protected
      * @param {Object} src - Stats object
      * @param {Array} result - Result array to fill
      * @param {number} level - Indent level
@@ -495,9 +611,12 @@ class StatsDisplay {
         const entries = Object.entries( src );
         for ( let i = 0; i < entries.length; i++ ) {
             const [ heading, content ] = entries[ i ];
-            const line = this._indent( level ) + this.styleAs( heading, 'heading' + level );
-            if ( !this._display( content, result, level, line ) ) {
-                result.push( line );
+            const line = this.styleAs( heading, 'heading' + level );
+            if ( !this.show( content, result, level, line ) ) {
+                if ( result.length && level === this.indentStart ) {
+                    result.push( '' );
+                }
+                result.push( this._indent( level ) + line );
                 this._recursive( content, result, level + 1 );
             }
         }
@@ -505,28 +624,35 @@ class StatsDisplay {
 
     /**
      * Display value
+     * @public
      * @param {*} value - Value
-     * @param {Array} result - Result array to fill
+     * @param {Array|true} result - Result array to fill
      * @param {number} level - Indent level
      * @param {null|string} heading - Heading to use
-     * @return {boolean} - True if value was displayed
+     * @return {boolean|StatsDisplayType} - True if value was displayed, or StatsDisplayType if result is set true
      */
-    _display( value, result, level, heading = null ) {
-        if ( this._is_simple( value ) ) {
+    show( value, result, level = 1, heading = null ) {
+        if ( this.is_simple( value ) ) {
             value = new StatsDisplayType( value );
         }
-        if ( this._is_display_type( value ) ) {
+        if ( this.is_display_type( value ) ) {
             value = new StatsDisplayType( ...value );
         }
         if ( value instanceof StatsDisplayType ) {
             value.parent = this;
-            if ( level > 1 ) {
+            if ( result === true || level > 1 ) {
                 if ( heading ) {
                     value = heading + this.pieces.headingSpacer + value;
+                } else {
+                    value += '';
                 }
+                if ( result !== true ) {
+                    value = this._indent( level ) + value;
+                }
+                if ( result === true ) return value;
                 result.push( value );
             } else {
-                result.push( heading );
+                result.push( this._indent( level ) + heading );
                 result.push( this._indent( level + 1 ) + value );
             }
             return true;
@@ -536,6 +662,7 @@ class StatsDisplay {
 
     /**
      * Parse array
+     * @protected
      * @param {Array} src - Stats array
      * @param {Array} result - Result array to fill
      * @param {number} level - Indent level
@@ -546,7 +673,7 @@ class StatsDisplay {
             throw new StatsDisplayException( 'Source must be an array' );
         }
         for ( let i = 0; i < src.length; i++ ) {
-            if ( !this._display( src[ i ], result, level ) ) {
+            if ( !this.show( src[ i ], result, level ) ) {
                 this._recursive( src, result, level );
             }
         }
@@ -560,7 +687,7 @@ class StatsDisplay {
      * @return {void}
      */
     parse( src, result ) {
-        this._recursive( src, result, 1 );
+        this._recursive( src, result, this.indentStart );
     }
 
     /**

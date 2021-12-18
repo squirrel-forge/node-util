@@ -7,6 +7,7 @@ module.exports = {
     FsInterface : require( './src/classes/FsInterface' ),
     OutputBuffer : require( './src/classes/OutputBuffer' ),
     Progress : require( './src/classes/Progress' ),
+    StatsDisplay : require( './src/classes/StatsDisplay' ),
     Timer : require( './src/classes/Timer' ),
     Warning : require( './src/classes/Warning' ),
     callback : require( './src/fn/callback' ),

@@ -518,6 +518,7 @@ class StatsDisplay {
 
     /**
      * Style is defined
+     * @public
      * @param {string} style - Style name
      * @return {boolean} - True if the style name is defined
      */
@@ -527,6 +528,7 @@ class StatsDisplay {
 
     /**
      * Style string
+     * @public
      * @param {string} str - String to style
      * @param {string} style - Style name
      * @param {boolean} noReset - Do not reset style at end of string

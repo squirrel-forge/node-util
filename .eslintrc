@@ -87,7 +87,6 @@
 
     "array-bracket-newline": [ 2, "consistent" ],
     "array-bracket-spacing": [ 2, "always"],
-    "array-element-newline": [ 2, { "multiline": true, "minItems": 10 } ],
     "block-spacing" : 2,
     "brace-style": [ 2, "1tbs", { "allowSingleLine": true } ],
     "comma-dangle": [ 2, { "arrays": "only-multiline", "objects": "only-multiline", "imports": "never", "exports": "never", "functions": "ignore" } ],
@@ -111,7 +110,6 @@
     "no-trailing-spaces": 2,
     "no-unneeded-ternary": 2,
 
-    "object-curly-newline": [ 2, { "ObjectExpression": { "multiline": true, "minProperties": 8 }, "ObjectPattern": { "multiline": true, "minProperties": 8 }, "ImportDeclaration": { "multiline": true, "minProperties": 8 }, "ExportDeclaration": { "multiline": true, "minProperties": 8 } } ],
     "object-curly-spacing": [ 2, "always", { "arraysInObjects": true, "objectsInObjects": true } ],
     "one-var": [ 2, { "var": "always", "let": "consecutive", "const": "never" } ],
 

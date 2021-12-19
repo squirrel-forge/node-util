@@ -61,9 +61,21 @@ const { Class, function } = require( '@squirrel-forge/node-util' );
  - Progress()
    - start( text, loop )
    - stop()
+ - StatsDisplay( cfx )
+   - constructor
+     - StatsDisplayException : StatsDisplayException constructor
+     - StatsDisplayType : StatsDisplayType constructor
+   - hasStyle( name )
+   - styleAs( string, style, no-reset )
+   - is_simple( value )
+   - is_display_type( value )
+   - show( value, result, level, heading )
+   - parse( source, result )
+   - display( source, output )
  - Timer
    - start( name )
    - get( name )
+   - measure( name )
    - end( name )
  - Warning( message, previous, options ) extends Exception
    - name : string
@@ -77,9 +89,10 @@ const { Class, function } = require( '@squirrel-forge/node-util' );
  - callback( name, context, args )
  - cmd( command )
  - convertBytes( bytes, decimals, style, return, unit )
+ - convertHrtime( time, seconds_suffix_separrator, milliseconds_suffix, return )
  - isPojo( obj )
  - isUrl( string )
- - leadingZeros( number, length, char )
+ - leadingZeros( number, length, char, reverse )
  - parseInput( args )
  - prompt( once )
  - rand( min, max )

@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.2
+ - Added *reverse* option to *leadingZeros* function.
+ - Added some missing docs.
+
 ## 1.1.1
  - Added *Timer.measure* to get hrtime difference to start and improved *Timer.end*.
  - Added *convertHrtime* hrtime formatter.

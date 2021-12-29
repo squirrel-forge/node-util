@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.0
+ - Added *FsInterface.files* to fetch files inside a directory.
+ - Added *FsInterface.filterOptions* to use same shortcut options for *FsInterface.files* as for *FsInterface.fileList*.
+ - Added *FsInterface.filterFiles* filters a files list by options.
+
 ## 1.1.2
  - Added *reverse* option to *leadingZeros* function.
  - Added some missing docs.

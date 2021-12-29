@@ -244,20 +244,100 @@ class FsInterface {
     }
 
     /**
-     * Get files list
+     * Get filter options from shortcuts
      * @public
-     * @param {string} dir - Source directory
-     * @param {('json'|'js')|Object} options - directory-tree options
-     * @return {Array} - List of files
+     * @param {null|string|Object|{exclude:RegExp,extensions:RegExp}} options - Options input
+     * @return {null|{exclude:RegExp,extensions:RegExp}} - Options object or null
      */
-    static fileList( dir, options ) {
-
-        // Options shortcuts
+    static filterOptions( options ) {
         if ( options === 'json' ) {
             options = { extensions : /\.json/ };
         } else if ( options === 'js' ) {
             options = { extensions : /\.js/ };
+        } else if ( typeof options !== 'object' ) {
+            return null;
         }
+        return options;
+    }
+
+    /**
+     * Filter files array result
+     * @public
+     * @param {Array} files - Files array
+     * @param {null|string|{exclude:RegExp,extensions:RegExp}} options - directory-tree like options
+     * @return {Array<string>} - Filtered files
+     */
+    static filterFiles( files, options ) {
+
+        // Options resolve shortcut
+        options = FsInterface.filterOptions( options );
+
+        // Skip if no filter selected
+        if ( options === null ) {
+            return files;
+        }
+
+        // Filter files
+        const result = [];
+        for ( let i = 0; i < files.length; i++ ) {
+            const file = files[ i ];
+
+            // Skip if it matches the exclude regex
+            if ( options.exclude ) {
+                const excludes = options.exclude instanceof Array ? options.exclude : [ options.exclude ];
+                if ( excludes.some( ( exclusion ) => { return exclusion.test( file.toLowerCase() ); } ) ) {
+                    continue;
+                }
+            }
+
+            // Skip if it does not match the extension regex
+            if ( options.extensions && !options.extensions.test( path.extname( file ).toLowerCase() ) ) {
+                continue;
+            }
+
+            // Add to results
+            result.push( file );
+        }
+        return result;
+    }
+
+    /**
+     * Get files list
+     * @public
+     * @param {string} dir - Source directory
+     * @param {Object|{exclude:RegExp,extensions:RegExp}} filter - directory-tree options
+     * @return {Promise<Array<string>|FsInterfaceException|null>} - Array or null on error
+     */
+    static files( dir, filter ) {
+        return new Promise( ( resolve ) => {
+            fs.readdir( dir, ( err, files ) => {
+                if ( err ) {
+                    resolve( new FsInterfaceException( 'Failed to read directory: ' + dir, err ) );
+                } else {
+                    for ( let i = 0; i < files.length; i++ ) {
+                        files[ i ] = path.resolve( dir, files[ i ] );
+                    }
+                    if ( filter ) {
+                        resolve( FsInterface.filterFiles( files, filter ) );
+                    } else {
+                        resolve( files );
+                    }
+                }
+            } );
+        } );
+    }
+
+    /**
+     * Get files list recursive
+     * @public
+     * @param {string} dir - Source directory
+     * @param {('json'|'js')|Object|{exclude:RegExp,extensions:RegExp}} options - directory-tree options
+     * @return {Array<string>} - List of files
+     */
+    static fileList( dir, options ) {
+
+        // Options resolve shortcut
+        options = FsInterface.filterOptions( options );
 
         // Get files tree
         const tree = dirTree( dir, options );
@@ -274,7 +354,7 @@ class FsInterface {
      * Convert tree to file list
      * @public
      * @param {dirTree} tree - Tree data
-     * @param {Array} result - Files list
+     * @param {Array<string>} result - Files list
      * @return {void}
      */
     static fileListRecursive2Flat( tree, result ) {

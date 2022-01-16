@@ -56,11 +56,14 @@ const { Class, function } = require( '@squirrel-forge/node-util' );
    - treeWalker( tree, callback )
  - OutputBuffer()
    - length : number
+   - allowIntercept : boolean
    - flush()
    - reduce()
    - contents()
    - start()
    - end()
+   - onIntercept( handler )
+   - offIntercept( handler )
  - Progress()
    - start( text, loop )
    - stop()

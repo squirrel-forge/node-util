@@ -28,6 +28,22 @@ module.exports = class OutputBuffer {
          * @type {Array<string>}
          */
         this._ = [];
+
+        /**
+         * Input handlers
+         * @protected
+         * @property
+         * @type {Array<start>}
+         */
+        this._h = [];
+
+        /**
+         * Allow intercept decision
+         * @public
+         * @property
+         * @type {boolean}
+         */
+        this.allowIntercept = false;
     }
 
     /**
@@ -81,8 +97,11 @@ module.exports = class OutputBuffer {
      */
     start() {
         this._end = intercept( ( text ) => {
-            this._.push( text );
-            return '';
+            if ( !this.allowIntercept || this._shouldIntercept( text ) ) {
+                this._.push( text );
+                return '';
+            }
+            return text;
         } );
         return this;
     }
@@ -97,5 +116,56 @@ module.exports = class OutputBuffer {
             this._end = null;
         }
         return this;
+    }
+
+    /**
+     * Should intercept
+     * @protected
+     * @param {string} text - Intercepted output
+     * @return {boolean} - True to intercept
+     */
+    _shouldIntercept( text ) {
+        if ( !this._h.length ) {
+            return true;
+        }
+        for ( let i = 0; i < this._h.length; i++ ) {
+            const should = this._h[ i ]( text );
+            if ( typeof should === 'boolean' ) {
+                return should;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Set intercept handler
+     * @param {Function} handler - Intercept checker
+     * @return {void}
+     */
+    onIntercept( handler ) {
+        if ( typeof handler !== 'function' ) {
+            throw new Error( 'Invalid handler argument, must be a function' );
+        }
+        this._h.push( handler );
+    }
+
+    /**
+     * Remove intercept handler or clear all
+     * @param {true|Function} handler - True to remove all
+     * @return {void}
+     */
+    offIntercept( handler ) {
+        if ( !( handler === true || typeof handler === 'function' ) ) {
+            throw new Error( 'Invalid handler argument, must be a function or true to remove all handlers' );
+        }
+        if ( handler === true ) {
+            this._h = [];
+        } else {
+            for ( let i = 0; i < this._h.length; i++ ) {
+                if ( this._h[ i ] === handler ) {
+                    this._h.splice( i, 1 );
+                }
+            }
+        }
     }
 };

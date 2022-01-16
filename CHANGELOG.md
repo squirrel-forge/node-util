@@ -2,6 +2,7 @@
 
 ## 1.2.1
  - Added *OutputBuffer* conditional intercepts with methods *OutputBuffer.onIntercept* and *OutputBuffer.offIntercept*.
+ - Added *safemode* to *Progress* that intercepts any other output to prevent the spinner from breaking.
 
 ## 1.2.0
  - Added *FsInterface.files* to fetch files inside a directory.

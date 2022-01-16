@@ -65,8 +65,8 @@ const { Class, function } = require( '@squirrel-forge/node-util' );
    - onIntercept( handler )
    - offIntercept( handler )
  - Progress()
-   - start( text, loop )
-   - stop()
+   - start( text, loop, safemode )
+   - stop( keep )
  - StatsDisplay( cfx )
    - constructor
      - StatsDisplayException : StatsDisplayException constructor

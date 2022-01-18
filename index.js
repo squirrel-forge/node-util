@@ -23,6 +23,7 @@ module.exports = {
     simpleReplace : require( './src/fn/simpleReplace' ),
     strand : require( './src/fn/strand' ),
     convertHrtime : require( './src/fn/convertHrtime' ),
+    convertMs2Hrtime : require( './src/fn/convertMs2Hrtime' ),
     strSlug : require( './src/fn/strSlug' ),
     trimChar : require( './src/fn/trimChar' ),
     wait : require( './src/fn/wait' ),

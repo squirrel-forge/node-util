@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.3.0
+ - Added allow bool option with string value to *CliInput.getFlagsOptions* method.
+ - Added *convertMs2Hrtime* time converter.
+ - Simplified some files export syntax.
+
 ## 1.2.1
  - Added *OutputBuffer* conditional intercepts with methods *OutputBuffer.onIntercept* and *OutputBuffer.offIntercept*.
  - Added *safemode* to *Progress* that intercepts any other output to prevent the spinner from breaking.

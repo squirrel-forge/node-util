@@ -2,13 +2,13 @@
  * Requires
  */
 const intercept = require( 'intercept-stdout' );
-const Spinner = require( 'cli-spinner' ).Spinner;
+const { Spinner } = require( 'cli-spinner' );
 
 /**
  * Progress class
  * @class
  */
-class Progress {
+module.exports = class Progress {
 
     /**
      * Constructor
@@ -122,10 +122,4 @@ class Progress {
         }
         return last;
     }
-}
-
-/**
- * Export
- * @type {Progress}
- */
-module.exports = Progress;
+};

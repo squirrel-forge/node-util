@@ -7,7 +7,7 @@ const convertHrtime = require( '../fn/convertHrtime' );
  * Timer class
  * @class
  */
-class Timer {
+module.exports = class Timer {
 
     /**
      * Constructor
@@ -69,10 +69,4 @@ class Timer {
         return null;
     }
 
-}
-
-/**
- * Export
- * @type {Timer}
- */
-module.exports = Timer;
+};

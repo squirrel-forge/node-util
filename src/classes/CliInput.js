@@ -25,7 +25,7 @@ const prompt = require( '../fn/prompt' );
  * @class
  * @type {CliInput}
  */
-class CliInput {
+module.exports = class CliInput {
 
     /**
      * Constructor
@@ -160,19 +160,19 @@ class CliInput {
     /**
      * Get flags and options as object
      * @public
-     * @param {{name:['short','long','default',boolean]}} src - Options source map
+     * @param {{name:['short','long','default',boolean,boolean]}} src - Options source map
      * @return {{name:*}} - Map of flag and option values
      */
     getFlagsOptions( src ) {
         const check = Object.entries( src );
         const res = {};
         for ( let i = 0; i < check.length; i++ ) {
-            const [ short, long, default_value, is_bool ] = check[ i ][ 1 ];
+            const [ short, long, default_value, is_bool, allow_bool_string ] = check[ i ][ 1 ];
             const name = check[ i ][ 0 ];
             res[ name ] = this.flag( long ) || this.flag( short, default_value );
 
             const is_str = typeof res[ name ] === 'string';
-            if ( is_bool && res[ name ] !== default_value && is_str ) {
+            if ( is_bool && res[ name ] !== default_value && is_str && !allow_bool_string ) {
 
                 // With boolean option force a boolean type value if its not the default value
                 res[ name ] = this._f.indexOf( res[ name ].toLowerCase() ) < 0;
@@ -333,5 +333,4 @@ class CliInput {
         }
         return answers;
     }
-}
-module.exports = CliInput;
+};

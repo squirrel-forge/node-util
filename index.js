@@ -19,6 +19,7 @@ module.exports = {
     parseInput : require( './src/fn/parseInput' ),
     prompt : require( './src/fn/prompt' ),
     rand : require( './src/fn/rand' ),
+    requireOptional : require( './src/fn/requireOptional' ),
     round : require( './src/fn/round' ),
     simpleReplace : require( './src/fn/simpleReplace' ),
     strand : require( './src/fn/strand' ),

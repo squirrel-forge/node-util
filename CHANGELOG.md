@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4.0 [**Breaking changes**]
+ - Removed *node-fetch* dependency for security and low usage reasons, must be installed manually if required.
+ - Removed *Exception.toLocaleString* method, *toString* method is sufficient.
+ - Fixed *Exception.stack* and Exception.toString* to handle previous without any conversion methods.
+ - Added notes for *node-fetch* to README.md.
+
 ## 1.3.0
  - Added allow bool option with string value to *CliInput.getFlagsOptions* method.
  - Added *convertMs2Hrtime* time converter.

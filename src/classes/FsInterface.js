@@ -3,7 +3,6 @@
  */
 const path = require( 'path' );
 const fs = require( 'fs' );
-const fetch = require( 'node-fetch' );
 const dirTree = require( 'directory-tree' );
 const Exception = require( './Exception' );
 
@@ -29,6 +28,15 @@ class FsInterface {
     static remote( url ) {
         return new Promise( ( resolve ) => {
 
+            // Get node fetch or throw with requirement
+            let fetch;
+            try {
+                fetch = require( 'node-fetch' );
+            } catch ( err ) {
+                resolve( new FsInterfaceException( 'Requires node-fetch@^2.6.7', err ) );
+                return;
+            }
+
             /**
              * Successfully loaded
              * @param {Object} res - Fetch buffer
@@ -42,6 +50,8 @@ class FsInterface {
                     resolve( new FsInterfaceException( res.status + '#' + res.statusText + ' for: ' + url ) );
                 }
             };
+
+            // Fetch file form url
             fetch( url ).then( success ).catch( ( err ) => {
                 resolve( new FsInterfaceException( 'Failed to fetch url: ' + url, err ) );
             } );

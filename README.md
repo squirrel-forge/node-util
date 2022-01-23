@@ -15,6 +15,10 @@ npm i @squirrel-forge/node-util
 const { Class, function } = require( '@squirrel-forge/node-util' );
 ```
 
+## Notes
+
+To use *FsInterface.remote*, *FsInterface.remoteText* or *FsInterface.remoteJSON* methods you must manually install [node-fetch@^2.6.7](https://www.npmjs.com/package/node-fetch/v/2.6.7) which is currently the latest node@^10.0.0 compatible version, the explicit dependency was removed for security and low usage reasons.
+
 ### Classes
 
  - CliInput( cfx, args, trimQuotes, false, true )
@@ -34,7 +38,6 @@ const { Class, function } = require( '@squirrel-forge/node-util' );
    - previous : *
    - stack : string
    - toString()
-   - toLocaleString()
  - FsInterface : static
    - remote( url )
    - remoteText( url )

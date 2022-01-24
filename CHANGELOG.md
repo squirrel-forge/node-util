@@ -1,7 +1,11 @@
 # Changelog
 
+## 1.4.1
+ - Added *requireOptional* to require a module, either quiet or with requirement error message.
+ - Moved all dependencies to optional peer dependencies, must be manually installed when using the methods or classes that require a dependency.
+
 ## 1.4.0 [**Breaking changes**]
- - Removed *node-fetch* dependency for security and low usage reasons, must be installed manually if required.
+ - Removed all dependencies for security and low usage reasons, must be installed manually if required.
  - Removed *Exception.toLocaleString* method, *toString* method is sufficient.
  - Fixed *Exception.stack* and Exception.toString* to handle previous without any conversion methods.
  - Added notes for *node-fetch* to README.md.

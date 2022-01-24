@@ -1,6 +1,6 @@
 {
   "name": "@squirrel-forge/node-util",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Collection of node utilities",
   "main": "index.js",
   "scripts": {
@@ -26,9 +26,24 @@
   "engines": {
     "node": ">= 10.0.0"
   },
-  "dependencies": {
+  "peerDependencies": {
     "cli-spinner": "^0.2.10",
     "directory-tree": "^3.0.1",
-    "intercept-stdout": "^0.1.2"
+    "intercept-stdout": "^0.1.2",
+    "node-fetch": "^2.6.7"
+  },
+  "peerDependenciesMeta": {
+    "cli-spinner": {
+      "optional": true
+    },
+    "directory-tree": {
+      "optional": true
+    },
+    "intercept-stdout": {
+      "optional": true
+    },
+    "node-fetch": {
+      "optional": true
+    }
   }
 }

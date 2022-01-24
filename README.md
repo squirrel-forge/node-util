@@ -1,12 +1,11 @@
 # @squirrel-forge/node-util
 
-Collection of node utilities.
+Collection of basic node utilities, errors, terminal input, output, filesystem and more.
 
 ## Installation
 
 ```
 npm i @squirrel-forge/node-util
-
 ```
 
 ## Usage
@@ -17,7 +16,24 @@ const { Class, function } = require( '@squirrel-forge/node-util' );
 
 ## Notes
 
-To use *FsInterface.remote*, *FsInterface.remoteText* or *FsInterface.remoteJSON* methods you must manually install [node-fetch@^2.6.7](https://www.npmjs.com/package/node-fetch/v/2.6.7) which is currently the latest node@^10.0.0 compatible version, the explicit dependency was removed for security and low usage reasons.
+[**Breaking changes**] since version *^1.4.0* all external dependencies were removed and make optional peer dependencies and therefore must be installed manually when required.
+
+### Optional dependencies
+
+These dependencies are optional and only required when using the mentioned methods or classes.
+All of these must be installed manually, since they have been removed as direct dependencies.
+
+ - [cli-spinner@^0.2.10](https://www.npmjs.com/package/cli-spinner/v/0.2.10)
+   - *Progress*
+ - [directory-tree@^3.0.1](https://www.npmjs.com/package/directory-tree/v/3.0.1)
+   - *FsInterface.fileList*
+ - [intercept-stdout@^0.1.2](https://www.npmjs.com/package/intercept-stdout/v/0.1.2)
+   - *OutputBuffer*
+   - *Progress*
+ - [node-fetch@^2.6.7](https://www.npmjs.com/package/node-fetch/v/2.6.7)
+   - *FsInterface.remote*
+   - *FsInterface.remoteText*
+   - *FsInterface.remoteJSON*
 
 ### Classes
 
@@ -39,9 +55,9 @@ To use *FsInterface.remote*, *FsInterface.remoteText* or *FsInterface.remoteJSON
    - stack : string
    - toString()
  - FsInterface : static
-   - remote( url )
-   - remoteText( url )
-   - remoteJSON( url )
+   - remote( url )*
+   - remoteText( url )*
+   - remoteJSON( url )*
    - read( file, enc )
    - readText( file )
    - readJSON( file )
@@ -54,10 +70,10 @@ To use *FsInterface.remote*, *FsInterface.remoteText* or *FsInterface.remoteJSON
    - filterOptions( options )
    - filterFiles( files, options )
    - files( dir, filter )
-   - fileList( dir, options )
+   - fileList( dir, options )*
    - fileListRecursive2Flat( tree, result )
    - treeWalker( tree, callback )
- - OutputBuffer()
+ - OutputBuffer()*
    - length : number
    - allowIntercept : boolean
    - flush()
@@ -67,7 +83,7 @@ To use *FsInterface.remote*, *FsInterface.remoteText* or *FsInterface.remoteJSON
    - end()
    - onIntercept( handler )
    - offIntercept( handler )
- - Progress()
+ - Progress()*
    - start( text, loop, safemode )
    - stop( keep )
  - StatsDisplay( cfx )
@@ -105,6 +121,7 @@ To use *FsInterface.remote*, *FsInterface.remoteText* or *FsInterface.remoteJSON
  - parseInput( args )
  - prompt( once )
  - rand( min, max )
+ - requireOptional( name, version, fatal )
  - round( value, decimals )
  - simpleReplace( template, data, prefix, suffix )
  - strand()
@@ -112,6 +129,11 @@ To use *FsInterface.remote*, *FsInterface.remoteText* or *FsInterface.remoteJSON
  - trimChar( string, remove, limit )
  - wait( ms )
 
-## Docs
+* Has dependency, see [optional dependencies](#optional-dependencies).
 
-Check the sourcecode on [github](https://github.com/squirrel-forge/node-util) for extensive comments.
+## Issues and docs
+
+If you encounter any issues, please report [here](https://github.com/squirrel-forge/node-util/issues).
+
+---
+Check the sourcecode on [github](https://github.com/squirrel-forge/node-util) for detailed comments.

@@ -1,8 +1,9 @@
 /**
  * Requires
  */
-const intercept = require( 'intercept-stdout' );
-const { Spinner } = require( 'cli-spinner' );
+const requireOptional = require( '../fn/requireOptional' );
+const intercept = requireOptional( 'intercept-stdout', '^0.1.2', true );
+const { Spinner } = requireOptional( 'cli-spinner', '^0.2.10', true );
 
 /**
  * Progress class
@@ -117,9 +118,7 @@ module.exports = class Progress {
         }
         this._clearIntercept();
         const last = this.intercepted;
-        if ( !keep ) {
-            this.intercepted = [];
-        }
+        if ( !keep ) this.intercepted = [];
         return last;
     }
 };

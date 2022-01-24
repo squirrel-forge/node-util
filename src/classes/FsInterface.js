@@ -3,7 +3,7 @@
  */
 const path = require( 'path' );
 const fs = require( 'fs' );
-const dirTree = require( 'directory-tree' );
+const requireOptional = require( '../fn/requireOptional' );
 const Exception = require( './Exception' );
 
 /**
@@ -28,14 +28,8 @@ class FsInterface {
     static remote( url ) {
         return new Promise( ( resolve ) => {
 
-            // Get node fetch or throw with requirement
-            let fetch;
-            try {
-                fetch = require( 'node-fetch' );
-            } catch ( err ) {
-                resolve( new FsInterfaceException( 'Requires node-fetch@^2.6.7', err ) );
-                return;
-            }
+            // Get node-fetch or throw with requirement
+            const fetch = requireOptional( 'node-fetch', '^2.6.7', true );
 
             /**
              * Successfully loaded
@@ -346,6 +340,9 @@ class FsInterface {
      */
     static fileList( dir, options ) {
 
+        // Get directory-tree or throw with requirement
+        const dirTree = requireOptional( 'directory-tree', '^3.0.1', true );
+
         // Options resolve shortcut
         options = FsInterface.filterOptions( options );
 
@@ -363,7 +360,7 @@ class FsInterface {
     /**
      * Convert tree to file list
      * @public
-     * @param {dirTree} tree - Tree data
+     * @param {Object} tree - Tree data
      * @param {Array<string>} result - Files list
      * @return {void}
      */

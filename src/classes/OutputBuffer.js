@@ -1,7 +1,8 @@
 /**
  * Requires
  */
-const intercept = require( 'intercept-stdout' );
+const requireOptional = require( '../fn/requireOptional' );
+const intercept = requireOptional( 'intercept-stdout', '^0.1.2', true );
 
 /**
  * Output Buffer class
@@ -125,14 +126,10 @@ module.exports = class OutputBuffer {
      * @return {boolean} - True to intercept
      */
     _shouldIntercept( text ) {
-        if ( !this._h.length ) {
-            return true;
-        }
+        if ( !this._h.length ) return true;
         for ( let i = 0; i < this._h.length; i++ ) {
             const should = this._h[ i ]( text );
-            if ( typeof should === 'boolean' ) {
-                return should;
-            }
+            if ( typeof should === 'boolean' ) return should;
         }
         return false;
     }
@@ -162,9 +159,7 @@ module.exports = class OutputBuffer {
             this._h = [];
         } else {
             for ( let i = 0; i < this._h.length; i++ ) {
-                if ( this._h[ i ] === handler ) {
-                    this._h.splice( i, 1 );
-                }
+                if ( this._h[ i ] === handler ) this._h.splice( i, 1 );
             }
         }
     }

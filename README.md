@@ -16,7 +16,7 @@ const { Class, function } = require( '@squirrel-forge/node-util' );
 
 ## Notes
 
-[**Breaking changes**] since version *^1.4.0* all external dependencies were removed and make optional peer dependencies and therefore must be installed manually when required.
+[**Breaking changes**] since version *^1.4.0* all external dependencies were removed and made optional peer dependencies and therefore must be installed manually when required.
 
 ### Optional dependencies
 

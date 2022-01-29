@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.4.2
+ - Fixed *FsInterface* promise rejections.
+
 ## 1.4.1
  - Added *requireOptional* to require a module, either quiet or with requirement error message.
  - Moved all dependencies to optional peer dependencies, must be manually installed when using the methods or classes that require a dependency.

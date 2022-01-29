@@ -26,7 +26,7 @@ class FsInterface {
      * @return {Promise<Buffer|FsInterfaceException|null>} - Buffer or null on error
      */
     static remote( url ) {
-        return new Promise( ( resolve ) => {
+        return new Promise( ( resolve, reject ) => {
 
             // Get node-fetch or throw with requirement
             const fetch = requireOptional( 'node-fetch', '^2.6.7', true );
@@ -41,13 +41,13 @@ class FsInterface {
                     const file_buffer = await res.buffer();
                     resolve( file_buffer );
                 } else {
-                    resolve( new FsInterfaceException( res.status + '#' + res.statusText + ' for: ' + url ) );
+                    reject( new FsInterfaceException( res.status + '#' + res.statusText + ' for: ' + url ) );
                 }
             };
 
             // Fetch file form url
             fetch( url ).then( success ).catch( ( err ) => {
-                resolve( new FsInterfaceException( 'Failed to fetch url: ' + url, err ) );
+                reject( new FsInterfaceException( 'Failed to fetch url: ' + url, err ) );
             } );
         } );
     }
@@ -94,10 +94,10 @@ class FsInterface {
      * @return {Promise<Buffer|FsInterfaceException|null>} - Buffer or null on error
      */
     static read( file, enc = 'utf8' ) {
-        return new Promise( ( resolve ) => {
+        return new Promise( ( resolve, reject ) => {
             fs.readFile( file, enc, ( err, content ) => {
                 if ( err ) {
-                    resolve( new FsInterfaceException( 'Failed to read file: ' + file, err ) );
+                    reject( new FsInterfaceException( 'Failed to read file: ' + file, err ) );
                 } else {
                     const buffer = Buffer.from( content );
                     resolve( buffer );
@@ -167,10 +167,10 @@ class FsInterface {
      * @return {Promise<boolean|FsInterfaceException>} - True if the file was created
      */
     static write( file, content ) {
-        return new Promise( ( resolve ) => {
+        return new Promise( ( resolve, reject ) => {
             fs.writeFile( file, content, ( err ) => {
                 if ( err ) {
-                    resolve( new FsInterfaceException( 'Failed to write file: ' + file, err ) );
+                    reject( new FsInterfaceException( 'Failed to write file: ' + file, err ) );
                 } else {
                     resolve( true );
                 }
@@ -185,10 +185,10 @@ class FsInterface {
      * @return {Promise<boolean|FsInterfaceException>} - True if directory exists or was created
      */
     static dir( dir ) {
-        return new Promise( ( resolve ) => {
+        return new Promise( ( resolve, reject ) => {
             fs.mkdir( dir, { recursive : true }, ( err ) => {
                 if ( err ) {
-                    resolve( new FsInterfaceException( 'Failed to create directory: ' + dir, err ) );
+                    reject( new FsInterfaceException( 'Failed to create directory: ' + dir, err ) );
                 } else {
                     resolve( true );
                 }
@@ -213,10 +213,10 @@ class FsInterface {
      * @return {Promise<true|FsInterfaceException|null>} - True or null on error
      */
     static unlink( file ) {
-        return new Promise( ( resolve ) => {
+        return new Promise( ( resolve, reject ) => {
             fs.unlink( file, ( err ) => {
                 if ( err ) {
-                    resolve( new FsInterfaceException( 'Failed to delete file: ' + file, err ) );
+                    reject( new FsInterfaceException( 'Failed to delete file: ' + file, err ) );
                 } else {
                     resolve( true );
                 }
@@ -313,10 +313,10 @@ class FsInterface {
      * @return {Promise<Array<string>|FsInterfaceException|null>} - Array or null on error
      */
     static files( dir, filter ) {
-        return new Promise( ( resolve ) => {
+        return new Promise( ( resolve, reject ) => {
             fs.readdir( dir, ( err, files ) => {
                 if ( err ) {
-                    resolve( new FsInterfaceException( 'Failed to read directory: ' + dir, err ) );
+                    reject( new FsInterfaceException( 'Failed to read directory: ' + dir, err ) );
                 } else {
                     for ( let i = 0; i < files.length; i++ ) {
                         files[ i ] = path.resolve( dir, files[ i ] );

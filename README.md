@@ -1,42 +1,37 @@
 # @squirrel-forge/node-util
-
 Collection of basic node utilities, errors, terminal input, output, filesystem and more.
 
 ## Installation
-
 ```
 npm i @squirrel-forge/node-util
 ```
 
 ## Usage
-
 ```
 const { Class, function } = require( '@squirrel-forge/node-util' );
 ```
 
 ## Notes
-
+In prepareation of node version support changes, dependencies are softened and must be specified and/or documented by packages requiring them.
 [**Breaking changes**] since version *^1.4.0* all external dependencies were removed and made optional peer dependencies and therefore must be installed manually when required.
 
 ### Optional dependencies
-
 These dependencies are optional and only required when using the mentioned methods or classes.
 All of these must be installed manually, since they have been removed as direct dependencies.
 
- - [cli-spinner@^0.2.10](https://www.npmjs.com/package/cli-spinner/v/0.2.10)
+ - [cli-spinner@^0.2.x](https://www.npmjs.com/package/cli-spinner/v/0.2.10)
    - *Progress*
- - [directory-tree@^3.0.1](https://www.npmjs.com/package/directory-tree/v/3.0.1)
+ - [directory-tree@^3.x](https://www.npmjs.com/package/directory-tree/v/3.3.0)
    - *FsInterface.fileList*
- - [intercept-stdout@^0.1.2](https://www.npmjs.com/package/intercept-stdout/v/0.1.2)
+ - [intercept-stdout@^0.1.x](https://www.npmjs.com/package/intercept-stdout/v/0.1.2)
    - *OutputBuffer*
    - *Progress*
- - [node-fetch@^2.6.7](https://www.npmjs.com/package/node-fetch/v/2.6.7)
+ - [node-fetch@^2.x](https://www.npmjs.com/package/node-fetch/v/2.6.7) for *node 10.x*, use *node-fetch@^3.x* for later node versions. 
    - *FsInterface.remote*
    - *FsInterface.remoteText*
    - *FsInterface.remoteJSON*
 
 ### Classes
-
  - CliInput( cfx, args, trimQuotes, false, true )
    - trimQuotes : boolean 
    - hasArgs()
@@ -110,7 +105,6 @@ All of these must be installed manually, since they have been removed as direct 
    - toLocaleString()
 
 ### Functions
-
  - callback( name, context, args )
  - cmd( command )
  - convertBytes( bytes, decimals, style, return, unit )
@@ -132,7 +126,6 @@ All of these must be installed manually, since they have been removed as direct 
 * Has dependency, see [optional dependencies](#optional-dependencies).
 
 ## Issues and docs
-
 If you encounter any issues, please report [here](https://github.com/squirrel-forge/node-util/issues).
 
 ---

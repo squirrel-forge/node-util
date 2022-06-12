@@ -2,6 +2,7 @@
 
 ## 1.5.0
  - Softened dependencies in preparation for node version updates.
+ - Fixed *substr* with a clean *substring* calls.
  - Minor readme updates.
 
 ## 1.4.2

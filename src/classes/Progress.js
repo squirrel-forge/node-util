@@ -60,7 +60,7 @@ module.exports = class Progress {
         if ( text && text.length ) {
 
             // We can check against it
-            if ( output.substr( 0, text.length ) === text ) {
+            if ( output.substring( 0, text.length ) === text ) {
                 return output;
             }
         } else if ( output.length === 1 || chars.indexOf( output ) >= 0 ) {

@@ -235,14 +235,14 @@ class FsInterface {
     static relative2root( dir, root ) {
 
         // Directory must be a descendant of root
-        if ( dir.substr( 0, root.length ) !== root ) {
+        if ( dir.substring( 0, root.length ) !== root ) {
             throw new FsInterfaceException( 'Path "' + dir + '" must be nested in root: ' + root );
         }
-        const rel = dir.substr( root.length );
+        const rel = dir.substring( root.length );
 
         // Need to remove the absolute path slash
         if ( rel.length && rel[ 0 ] === path.sep ) {
-            return rel.substr( 1 );
+            return rel.substring( 1 );
         }
         return rel;
     }

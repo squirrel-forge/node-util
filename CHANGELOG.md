@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.5.0
+ - Softened dependencies in preparation for node version updates.
+ - Minor readme updates.
+
 ## 1.4.2
  - Fixed *FsInterface* promise rejections.
 

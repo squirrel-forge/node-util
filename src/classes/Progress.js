@@ -2,8 +2,6 @@
  * Requires
  */
 const requireOptional = require( '../fn/requireOptional' );
-const intercept = requireOptional( 'intercept-stdout', '^0.1.2', true );
-const { Spinner } = requireOptional( 'cli-spinner', '^0.2.10', true );
 
 /**
  * Progress class
@@ -16,6 +14,13 @@ module.exports = class Progress {
      * @constructor
      */
     constructor() {
+
+        /**
+         * Intercept dependency
+         * @protected
+         * @type {Function|null}
+         */
+        this._intercept = requireOptional( 'intercept-stdout', '^0.1.2', true );
 
         /**
          * Spinner reference
@@ -95,12 +100,13 @@ module.exports = class Progress {
         const last = this.stop();
 
         // Setup new spinner
+        const { Spinner } = requireOptional( 'cli-spinner', '^0.2.10', true );
         this._ = new Spinner( ( text ? text + ' ' : '' ) + '%s' );
         this._.setSpinnerString( chars );
 
         // In safe mode allow the spinner to intercept colliding output
         if ( safemode ) {
-            this._safe = intercept( ( output ) => { return this._verifyOutput( output, text, chars ); } );
+            this._safe = this._intercept( ( output ) => { return this._verifyOutput( output, text, chars ); } );
         }
         this._.start();
         return last;

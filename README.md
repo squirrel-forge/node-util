@@ -58,6 +58,7 @@ All of these must be installed manually, since they have been removed as direct 
    - readJSON( file )
    - exists( file, access )
    - write( file, content )
+   - copy( source, target )
    - dir( dir )
    - isDir( dir )
    - unlink( file )

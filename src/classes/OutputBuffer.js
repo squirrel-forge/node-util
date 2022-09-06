@@ -2,7 +2,6 @@
  * Requires
  */
 const requireOptional = require( '../fn/requireOptional' );
-const intercept = requireOptional( 'intercept-stdout', '^0.1.2', true );
 
 /**
  * Output Buffer class
@@ -15,6 +14,13 @@ module.exports = class OutputBuffer {
      * @constructor
      */
     constructor() {
+
+        /**
+         * Intercept dependency
+         * @protected
+         * @type {Function|null}
+         */
+        this._intercept = requireOptional( 'intercept-stdout', '^0.1.2', true );
 
         /**
          * End callback
@@ -97,7 +103,7 @@ module.exports = class OutputBuffer {
      * @return {OutputBuffer} - Self instance
      */
     start() {
-        this._end = intercept( ( text ) => {
+        this._end = this._intercept( ( text ) => {
             if ( !this.allowIntercept || this._shouldIntercept( text ) ) {
                 this._.push( text );
                 return '';

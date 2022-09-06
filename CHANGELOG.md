@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.6.0
+ - Added *FsInterface.copy* to copy local files.
+ - Changed *OutputBuffer* dependency *intercept-stdout* to runtime.
+ - Changed *Progress* dependencies *intercept-stdout* and *cli-spinner* to runtime.
+
 ## 1.5.0
  - Softened dependencies in preparation for node version updates.
  - Fixed *substr* with a clean *substring* calls.

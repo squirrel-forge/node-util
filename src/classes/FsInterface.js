@@ -179,6 +179,25 @@ class FsInterface {
     }
 
     /**
+     * Copy local file
+     * @public
+     * @param {string} source - Source file
+     * @param {string} target - Target file
+     * @return {Promise<boolean|FsInterfaceException>} - True if the file was copied
+     */
+    static copy( source, target ) {
+        return new Promise( ( resolve, reject ) => {
+            fs.copyFile( source, target, ( err ) => {
+                if ( err ) {
+                    reject( new Exception( 'Failed to copy: ' + source + ' to: ' + target , err ) );
+                } else {
+                    resolve( true );
+                }
+            } );
+        } );
+    }
+
+    /**
      * Write local dir
      * @public
      * @param {string} dir - Directory path

@@ -30,6 +30,8 @@ All of these must be installed manually, since they have been removed as direct 
    - *FsInterface.remote*
    - *FsInterface.remoteText*
    - *FsInterface.remoteJSON*
+ - [semver@^6.x](https://www.npmjs.com/package/semver/v/6.3.0) for *node 10.x*, use *semver@^7.x* for later node versions.
+   - *updateNotice*
 
 ### Classes
  - CliInput( cfx, args, trimQuotes, false, true )
@@ -122,6 +124,7 @@ All of these must be installed manually, since they have been removed as direct 
  - strand()
  - strSlug( string )
  - trimChar( string, remove, limit )
+ - updateNotice( pkg, cfx, verbose )
  - wait( ms )
 
 * Has dependency, see [optional dependencies](#optional-dependencies).

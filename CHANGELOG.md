@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.7.0
+ - Added *updateNotice* helper to provide quick and easy version update info for an installed package.
+
 ## 1.6.0
  - Added *FsInterface.copy* to copy local files.
  - Changed *OutputBuffer* dependency *intercept-stdout* to runtime.

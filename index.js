@@ -27,5 +27,6 @@ module.exports = {
     convertMs2Hrtime : require( './src/fn/convertMs2Hrtime' ),
     strSlug : require( './src/fn/strSlug' ),
     trimChar : require( './src/fn/trimChar' ),
+    updateNotice : require( './src/fn/updateNotice' ),
     wait : require( './src/fn/wait' ),
 };

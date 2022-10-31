@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.7.1
+ - Fixed wrong exception type used in *FsInterface.copy*.
+
 ## 1.7.0
  - Added *updateNotice* helper to provide quick and easy version update info for an installed package.
 

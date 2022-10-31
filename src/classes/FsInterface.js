@@ -189,7 +189,7 @@ class FsInterface {
         return new Promise( ( resolve, reject ) => {
             fs.copyFile( source, target, ( err ) => {
                 if ( err ) {
-                    reject( new Exception( 'Failed to copy: ' + source + ' to: ' + target , err ) );
+                    reject( new FsInterfaceException( 'Failed to copy: ' + source + ' to: ' + target , err ) );
                 } else {
                     resolve( true );
                 }
